@@ -10,30 +10,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Media {
-  id       Int      @id @default(autoincrement())
-  title    String
-  username String
-  posts    Post[]   // Relacionamento com posts
-  publications Publication[] // Relacionamento com publications
+model User {
+  id        String  @id @default(uuid())
+  username  String   @unique
+  password  String
+  avatar    String
 }
 
-model Post {
-  id       Int      @id @default(autoincrement())
-  title    String
-  text     String
-  image    String?
-  publications Publication[] // Relacionamento com publications
-  media    Media    @relation(fields: [mediaId], references: [id])
-  mediaId  Int
+model Media {
+  id        Int      @id @default(autoincrement())
+  title     String
+  username  String
+  posts     Post[]
+  publication Publication[]
 }
 
 model Publication {
   id        Int      @id @default(autoincrement())
-  mediaId   Int
-  postId    Int
-  date      DateTime
-  published Boolean
-  media     Media    @relation(fields: [mediaId], references: [id])
+  scheduledAt DateTime
   post      Post     @relation(fields: [postId], references: [id])
+  media     Media    @relation(fields: [mediaId], references: [id])
+  postId    Int
+  mediaId   Int
+}
+
+model Post {
+  id        Int          @id @default(autoincrement())
+  title     String
+  text      String
+  image     String?
+  media     Media[]
+  publication Publication[]
 }
