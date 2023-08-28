@@ -1,4 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { PublicationsController } from './publications.controller';
+import { PublicationsService } from './publications.service';
+import { PrismaModule } from '../prisma/prisma.module';
+import { PublicationsRepository } from './publications.repository';
 
-@Injectable()
-export class MediasService {}
+@Module({
+    imports: [PrismaModule],
+    controllers: [PublicationsController],
+    providers: [PublicationsService, PublicationsRepository],
+})
+export class PublicationsModule {}

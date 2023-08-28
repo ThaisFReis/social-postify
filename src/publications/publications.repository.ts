@@ -1,14 +1,20 @@
-/*import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreatePublicationDto } from './publication.dto';
-import { Publication } from './publication.entity';
+import { CreatePublicationDto } from './publications.dto';
+import { Publication } from './publications.entity';
 
 @Injectable()
 export class PublicationsRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(data: CreatePublicationDto): Promise<Publication> {
-    return this.prisma.publication.create({ data });
+    const prismaCreateInput = {
+      mediaId: data.mediaId,
+      postId: data.postId,
+      scheduledAt: new Date(data.date),
+    };
+
+    return this.prisma.publication.create({ data: prismaCreateInput });
   }
 
   async findAll(): Promise<Publication[]> {
@@ -27,4 +33,3 @@ export class PublicationsRepository {
     return this.prisma.publication.delete({ where: { id } });
   }
 }
-*/
